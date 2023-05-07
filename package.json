@@ -2,6 +2,9 @@
   "name": "custom-chatgpt-ui",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,17 +12,29 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.17",
+    "clsx": "^1.2.1",
+    "date-fns": "^2.30.0",
+    "nanoid": "^4.0.2",
+    "next": "13.4.1",
+    "next-auth": "^4.22.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-textarea-autosize": "^8.4.1",
+    "swr": "^2.1.5",
+    "tailwindcss": "3.3.2",
+    "type-fest": "^3.10.0"
+  },
+  "devDependencies": {
     "@types/node": "20.0.0",
     "@types/react": "18.2.5",
     "@types/react-dom": "18.2.4",
     "autoprefixer": "10.4.14",
     "eslint": "8.39.0",
     "eslint-config-next": "13.4.1",
-    "next": "13.4.1",
+    "eslint-config-prettier": "^8.8.0",
     "postcss": "8.4.23",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "tailwindcss": "3.3.2",
+    "prettier": "^2.8.8",
     "typescript": "5.0.4"
   }
 }
