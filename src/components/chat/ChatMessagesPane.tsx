@@ -6,6 +6,7 @@ import { useRevalidateChatHistory } from '@/hooks/chat/useRevalidateChatHistory'
 import { ChatMessageForm } from '@/components/chat/ChatMessageForm';
 import { ChatMessageList } from '@/components/chat/ChatMessageList';
 import { ChatEmpty } from '@/components/chat/ChatEmpty';
+import { useRouter } from 'next/navigation';
 
 export type ChatMessagesPaneProps = {
   chatId?: string;
@@ -16,9 +17,19 @@ export const ChatMessagesPane = ({
   chatId,
   messages: defaultMessages,
 }: ChatMessagesPaneProps) => {
+  const router = useRouter();
   const revalidateChatHistory = useRevalidateChatHistory();
+  const [systemPrompt, setSystemPrompt] = useState(
+    defaultMessages?.[defaultMessages?.length - 1]?.role ===
+      ChatMessageRole.System
+      ? defaultMessages?.[defaultMessages?.length - 1]?.content
+      : '',
+  );
   const [persistedMessages, setPersistedMessages] = useState<ChatMessage[]>(
-    () => defaultMessages ?? [],
+    () =>
+      defaultMessages?.filter(
+        (message) => message.role !== ChatMessageRole.System,
+      ) ?? [],
   );
   const {
     data: temporaryMessageContent,
@@ -38,8 +49,8 @@ export const ChatMessagesPane = ({
     ]);
     await mutate({
       messageContent: input,
+      systemPrompt,
       onChatIdDetermined: (chatId) => {
-        window.history.replaceState(null, '', `/chat/${chatId}`);
         revalidateChatHistory();
       },
       onSuccess: (messageContent) => {
@@ -74,11 +85,18 @@ export const ChatMessagesPane = ({
   return (
     <div className="flex-grow h-full flex flex-col">
       {messages.length === 0 ? (
-        <ChatEmpty />
+        <ChatEmpty
+          systemPrompt={systemPrompt}
+          onSystemPromptChange={setSystemPrompt}
+        />
       ) : (
-        <ChatMessageList messages={messages} error={error} />
+        <ChatMessageList
+          messages={messages}
+          systemPrompt={systemPrompt}
+          error={error}
+        />
       )}
-      <ChatMessageForm onSubmit={handleSubmit} isDisabled={isMutating} />
+      <ChatMessageForm onSubmit={handleSubmit} isSubmitting={isMutating} />
     </div>
   );
 };

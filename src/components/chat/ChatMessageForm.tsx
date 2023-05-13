@@ -1,16 +1,20 @@
 import TextareaAutosize from 'react-textarea-autosize';
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane, faSliders } from '@fortawesome/free-solid-svg-icons';
+import clsx from 'clsx';
 
 export type ChatMessageFormProps = {
-  isDisabled?: boolean;
+  isSubmitting?: boolean;
   onSubmit: (input: string) => void;
 };
 
 export const ChatMessageForm = ({
-  isDisabled,
+  isSubmitting,
   onSubmit,
 }: ChatMessageFormProps) => {
   const [input, setInput] = useState('');
+  const isValid = input.trim().length > 0;
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
@@ -27,25 +31,31 @@ export const ChatMessageForm = ({
     onSubmit(input);
   };
   return (
-    <div className="flex flex-shrink-0 items-start pb-3 px-6">
+    <div className="flex flex-shrink-0 items-start py-3.5 px-6 bg-base-100">
       <TextareaAutosize
-        className="flex-grow px-3 py-2 focus:outline-slate-300 rounded-lg resize-none placeholder:text-slate-200"
+        className="flex-grow textarea textarea-bordered resize-none"
         minRows={1}
         maxRows={4}
         autoFocus
-        disabled={isDisabled}
         placeholder="Send a message"
         value={input}
         onKeyDown={handleKeyDown}
         onChange={handleChange}
       />
       <button
-        className="flex-shrink-0 ml-4 bg-slate-100 rounded-lg px-3 py-2 text-slate-900 hover:bg-slate-200 disabled:bg-slate-100 disabled:cursor-not-allowed disabled:text-slate-300 transition"
+        className={clsx(
+          'flex-shrink-0 ml-4 btn gap-2',
+          isSubmitting && 'loading',
+        )}
         type="button"
-        disabled={!input.trim() || isDisabled}
+        disabled={!isValid || isSubmitting}
         onClick={handleSubmit}
       >
+        {!isSubmitting && <FontAwesomeIcon icon={faPaperPlane} />}
         Submit
+      </button>
+      <button className="btn btn-square ml-2">
+        <FontAwesomeIcon icon={faSliders} />
       </button>
     </div>
   );

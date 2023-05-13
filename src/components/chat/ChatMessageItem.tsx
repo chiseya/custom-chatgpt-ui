@@ -1,5 +1,12 @@
-import { AcademicCapIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import { ChatMessageRole } from '@/models/message';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
+import { faRobot } from '@fortawesome/free-solid-svg-icons';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { gruvboxDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import clsx from 'clsx';
 
 export type ChatMessageItemProps = {
   message: {
@@ -10,13 +17,49 @@ export type ChatMessageItemProps = {
 
 export const ChatMessageItem = ({ message }: ChatMessageItemProps) => {
   return (
-    <div className="flex items-start px-6 py-3">
-      {message.role === 'user' ? (
-        <UserCircleIcon className="w-6 h-6 flex-shrink-0 mr-2" />
-      ) : (
-        <AcademicCapIcon className="w-6 h-6 flex-shrink-0 mr-2" />
+    <div
+      className={clsx(
+        'flex items-start px-6 py-3',
+        message.role === 'assistant' ? 'bg-base-200/50' : 'bg-base-100',
       )}
-      <p className="whitespace-pre-wrap flex-grow">{message.content}</p>
+    >
+      {message.role === 'assistant' ? (
+        <FontAwesomeIcon
+          icon={faRobot}
+          className="w-6 h-6 p-0.5 flex-shrink-0 mr-2"
+        />
+      ) : (
+        <FontAwesomeIcon
+          icon={faUserCircle}
+          className="w-5 h-5 p-1 flex-shrink-0 mr-2"
+        />
+      )}
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        className="flex-grow prose max-w-none"
+        components={{
+          code({ node, inline, className, children, ...props }) {
+            const match = /language-(\w+)/.exec(className || '');
+            return !inline && match ? (
+              <SyntaxHighlighter
+                {...props}
+                style={gruvboxDark}
+                customStyle={{ background: 'transparent' }}
+                language={match[1]}
+                PreTag="div"
+              >
+                {String(children).replace(/\n$/, '')}
+              </SyntaxHighlighter>
+            ) : (
+              <code {...props} className={className}>
+                {children}
+              </code>
+            );
+          },
+        }}
+      >
+        {message.content}
+      </ReactMarkdown>
     </div>
   );
 };

@@ -1,5 +1,5 @@
-import { NewChatContainer } from '@/components/chat/NewChatContainer';
+import { redirect } from 'next/navigation';
 
 export default function Page() {
-  return <NewChatContainer />;
+  redirect('/chat');
 }

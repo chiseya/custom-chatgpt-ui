@@ -1,6 +1,7 @@
 import React from 'react';
-import { XMarkIcon } from '@heroicons/react/24/solid';
 import { useDeleteChatHistory } from '@/hooks/chat/useDeleteChatHistory';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 export type ChatHistoryDeleteButtonProps = {
   chatId: string;
@@ -14,10 +15,10 @@ export const ChatHistoryDeleteButton = ({
     <button
       type="button"
       disabled={isLoading}
-      className="opacity-0 disabled:opacity-25 disabled:cursor-wait group-hover:opacity-100 pointer-events-auto group-hover:pointer-events-auto rounded-full w-6 h-6 hover:bg-red-50 hover:text-red-600 text-slate-600 transition flex items-center justify-center"
+      className="opacity-0 disabled:opacity-25 disabled:cursor-wait group-hover:opacity-100 btn btn-circle btn-xs btn-ghost"
       onClick={mutate}
     >
-      <XMarkIcon className="w-4 h-4" />
+      <FontAwesomeIcon icon={faXmark} className="w-4 h-4" />
     </button>
   );
 };

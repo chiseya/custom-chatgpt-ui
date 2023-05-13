@@ -5,18 +5,18 @@ import { useFetch } from '@/hooks/useFetch';
 export function useDeleteChatHistory(chatId: string) {
   const revalidateChatHistory = useRevalidateChatHistory();
   const [isLoading, setIsLoading] = useState(false);
-  const deleteChatHistory = useFetch('DELETE', `/chat/${chatId}`);
+  const fetch = useFetch();
 
   const mutate = useCallback(async (): Promise<void> => {
     try {
       setIsLoading(true);
-      await deleteChatHistory();
+      await fetch('DELETE', `/chat/${chatId}`);
       await revalidateChatHistory();
     } catch {
     } finally {
       setIsLoading(false);
     }
-  }, [deleteChatHistory, revalidateChatHistory]);
+  }, [chatId, fetch, revalidateChatHistory]);
   return {
     mutate,
     isLoading,

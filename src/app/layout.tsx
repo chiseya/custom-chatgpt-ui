@@ -1,6 +1,7 @@
 import './globals.css';
 import { ReactNode } from 'react';
 import AuthProvider from '@/providers/AuthProvider';
+import { AuthContainer } from '@/components/app/AuthContainer';
 import { AppContainer } from '@/components/app/AppContainer';
 
 export const metadata = {
@@ -15,9 +16,14 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <main className="h-screen bg-slate-50 text-slate-950">
+        <main className="h-screen">
           <AuthProvider>
-            <AppContainer>{children}</AppContainer>
+            <AuthContainer>
+              <AppContainer>
+                {children}
+                <div id="modal" />
+              </AppContainer>
+            </AuthContainer>
           </AuthProvider>
         </main>
       </body>

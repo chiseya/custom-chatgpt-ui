@@ -1,11 +1,11 @@
 import { useCallback, useRef, useState } from 'react';
-import { useSession } from 'next-auth/react';
 import { useCreateNewChat } from '@/hooks/chat/useCreateNewChat';
 import { useFetch } from '@/hooks/useFetch';
 
 export type MutateOptions = {
   chatId?: string;
   messageContent: string;
+  systemPrompt?: string;
   onChatIdDetermined?: (chatId: string) => void;
   onSuccess?: (receivedMessageContent: string) => void;
   onError?: (error: string) => void;
@@ -20,10 +20,7 @@ export function useGenerateChatCompletion(
   const [isLoading, setIsLoading] = useState(false);
 
   const createNewChat = useCreateNewChat();
-  const generateChatCompletion = useFetch(
-    'POST',
-    '/chat/generate-chat-completion',
-  );
+  const fetch = useFetch();
 
   const abortControllerRef = useRef<AbortController>();
   const cancel = useCallback(() => {
@@ -34,6 +31,7 @@ export function useGenerateChatCompletion(
   const mutate = useCallback(
     async ({
       messageContent,
+      systemPrompt,
       onSuccess,
       onError,
       onChatIdDetermined,
@@ -43,6 +41,7 @@ export function useGenerateChatCompletion(
       abortControllerRef.current = new AbortController();
 
       let receivedMessageContent = '';
+
       let targetChatId: string;
       if (!chatId) {
         targetChatId = await createNewChat(messageContent);
@@ -52,10 +51,12 @@ export function useGenerateChatCompletion(
         targetChatId = chatId;
       }
 
-      const res = await generateChatCompletion(
+      const res = await fetch(
+        'POST',
+        `/chat/${targetChatId}/completion`,
         {
-          chatId: targetChatId,
           messageContent,
+          systemPrompt: systemPrompt || undefined,
         },
         { aborter: abortControllerRef.current },
       );
@@ -84,7 +85,7 @@ export function useGenerateChatCompletion(
         setIsLoading(false);
       }
     },
-    [chatId, createNewChat, generateChatCompletion],
+    [chatId, createNewChat, fetch],
   );
 
   return {

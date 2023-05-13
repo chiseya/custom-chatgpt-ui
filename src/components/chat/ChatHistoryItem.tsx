@@ -19,32 +19,23 @@ export const ChatHistoryItem = ({
   const pathname = usePathname();
   const relativeDate = formatRelative(parseISO(createdAt), new Date());
   return (
-    <Link
-      className={clsx(
-        'rounded-xl mt-2 first:mt-0 pl-4 pr-2 py-2 transition text-slate-950 flex items-center group',
-        pathname === `/chat/${chatId}`
-          ? 'bg-white'
-          : 'bg-slate-50 hover:bg-white text-opacity-75',
-      )}
-      key={chatId}
-      href={`/chat/${chatId}`}
-    >
-      <div className="flex-grow">
-        <p className="line-clamp-2">{title}</p>
-        <p
-          className={clsx(
-            'text-slate-500 text-xs',
-            pathname === `/chat/${chatId}`
-              ? 'text-opacity-100'
-              : 'text-opacity-50',
-          )}
-        >
-          {relativeDate}
-        </p>
-      </div>
-      <div className="flex-shrink-0">
-        <ChatHistoryDeleteButton chatId={chatId} />
-      </div>
-    </Link>
+    <li className="mt-1 first:mt-0">
+      <Link
+        className={clsx(
+          'flex items-center group pl-3.5 pr-2 py-2',
+          pathname === `/chat/${chatId}` ? 'active' : '',
+        )}
+        key={chatId}
+        href={`/chat/${chatId}`}
+      >
+        <div className="flex-grow">
+          <p className="line-clamp-2 break-words">{title}</p>
+          <p className="text-xs opacity-50">{relativeDate}</p>
+        </div>
+        <div className="flex-shrink-0">
+          <ChatHistoryDeleteButton chatId={chatId} />
+        </div>
+      </Link>
+    </li>
   );
 };

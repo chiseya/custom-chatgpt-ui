@@ -2,13 +2,15 @@ import { useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { Jsonifiable } from 'type-fest';
 
-export function useFetch<TData = any, TError = any>(
-  method: string,
-  path: string,
-) {
+export function useFetch<TData = any, TError = any>() {
   const { data: session } = useSession();
   return useCallback(
-    (body?: Jsonifiable, opts?: { aborter: AbortController }) => {
+    (
+      method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+      path: string,
+      body?: Jsonifiable,
+      opts?: { aborter: AbortController },
+    ) => {
       return fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${path}`, {
         method,
         headers: {
@@ -19,6 +21,6 @@ export function useFetch<TData = any, TError = any>(
         ...(body ? { body: JSON.stringify(body) } : {}),
       });
     },
-    [method, path, session?.idToken],
+    [session?.idToken],
   );
 }

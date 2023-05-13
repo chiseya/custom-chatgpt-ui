@@ -4,10 +4,10 @@ import { useFetch } from '@/hooks/useFetch';
 
 export function useCreateNewChat() {
   const { data } = useSession();
-  const createNewChat = useFetch('POST', '/chat');
+  const fetch = useFetch();
   return useCallback(
     async (title?: string): Promise<string> => {
-      const res = await createNewChat({
+      const res = await fetch('POST', '/chat', {
         title: title || 'Untitled',
       });
       const json = await res.json();
@@ -16,6 +16,6 @@ export function useCreateNewChat() {
       }
       return json.chatId;
     },
-    [createNewChat],
+    [fetch],
   );
 }

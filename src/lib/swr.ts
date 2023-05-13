@@ -15,10 +15,7 @@ export const fetcher = async ([url, token]: [string, string | undefined]) => {
 
   const json = await res.json();
   if (!res.ok) {
-    const error = new Error(
-      json.message || 'An error occurred while fetching the data',
-    );
-    throw error;
+    throw json;
   }
   return json;
 };

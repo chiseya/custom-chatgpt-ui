@@ -1,14 +1,10 @@
 'use client';
 
-import { ChatHistoryPane } from '@/components/chat/ChatHistoryPane';
 import { ChatMessagesPane } from '@/components/chat/ChatMessagesPane';
-import { ChatLayout } from '@/components/chat/ChatLayout';
+import { useAtomValue } from 'jotai';
+import { newChatKeyAtom } from '@/store/newChatKeyAtom';
 
 export const NewChatContainer = () => {
-  return (
-    <ChatLayout>
-      <ChatHistoryPane />
-      <ChatMessagesPane />
-    </ChatLayout>
-  );
+  const newChatKey = useAtomValue(newChatKeyAtom);
+  return <ChatMessagesPane key={newChatKey} />;
 };

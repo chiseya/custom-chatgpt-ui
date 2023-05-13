@@ -12,7 +12,12 @@ export const VerificationContainer = ({
   const { data, error } = useVerify();
   if (!data && !error) return <LoadingContainer />;
   if (error) {
-    return <ErrorContainer message={error.message} showSignIn />;
+    return (
+      <ErrorContainer
+        message={error.message}
+        showSignIn={error.status === 401 || error.status === 403}
+      />
+    );
   }
   return <>{children}</>;
 };
