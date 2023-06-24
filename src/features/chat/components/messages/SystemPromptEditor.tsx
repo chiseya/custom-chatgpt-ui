@@ -15,7 +15,7 @@ export const SystemPromptEditor = ({ onSubmit }: SystemPromptEditorProps) => {
         className="btn mt-8 btn-sm btn-secondary"
         onClick={() => modalRef.current?.open()}
       >
-        Add system instructions
+        Add system prompt
       </button>
       <SystemPromptEditorModal modalRef={modalRef} onSubmit={onSubmit} />
     </>

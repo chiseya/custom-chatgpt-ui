@@ -25,7 +25,7 @@ export const SystemPromptEditorModal = ({
   return (
     <Modal ref={modalRef}>
       <h2 className="font-bold text-xl">
-        System Instructions{' '}
+        System Prompt{' '}
         <a
           href="https://platform.openai.com/docs/guides/chat"
           target="_blank"
