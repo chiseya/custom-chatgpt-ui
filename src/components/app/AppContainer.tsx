@@ -3,7 +3,7 @@
 import { ReactNode } from 'react';
 import { AppFooter } from '@/components/app/AppFooter';
 
-export type AppContainerProps = {
+type AppContainerProps = {
   children?: ReactNode;
 };
 

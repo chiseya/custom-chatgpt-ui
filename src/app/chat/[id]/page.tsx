@@ -1,6 +1,6 @@
-import { ChatContainer } from '@/components/chat/ChatContainer';
+import { ChatContainer } from '@/features/chat/components/ChatContainer';
 
-export type ChatPageProps = {
+type ChatPageProps = {
   params: {
     id: string;
   };

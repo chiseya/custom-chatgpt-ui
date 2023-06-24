@@ -1,11 +1,18 @@
 import './globals.css';
 import { ReactNode } from 'react';
-import AuthProvider from '@/providers/AuthProvider';
-import { AuthContainer } from '@/components/app/AuthContainer';
+import AppProvider from '@/providers/app/AppProvider';
+import { AuthContainer } from '@/features/auth/components/AuthContainer';
 import { AppContainer } from '@/components/app/AppContainer';
+import { Montserrat } from 'next/font/google';
+const font = Montserrat({
+  weight: ['400', '700'],
+  display: 'swap',
+  subsets: ['latin'],
+});
 
 export const metadata = {
-  title: 'Custom ChatGPT',
+  title: `${process.env.NEXT_PUBLIC_ORGANIZATION_NAME || 'Custom'} Chat Bot`,
+  robots: 'noindex, nofollow',
 };
 
 export default async function RootLayout({
@@ -14,17 +21,14 @@ export default async function RootLayout({
   children: ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={font.className}>
       <body>
         <main className="h-screen">
-          <AuthProvider>
+          <AppProvider>
             <AuthContainer>
-              <AppContainer>
-                {children}
-                <div id="modal" />
-              </AppContainer>
+              <AppContainer>{children}</AppContainer>
             </AuthContainer>
-          </AuthProvider>
+          </AppProvider>
         </main>
       </body>
     </html>

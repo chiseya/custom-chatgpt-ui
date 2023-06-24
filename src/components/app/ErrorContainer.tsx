@@ -1,6 +1,6 @@
-import { SignInWithGoogleButton } from '@/components/auth/SignInWithGoogleButton';
+import { SignInWithGoogleButton } from '@/features/auth/components/SignInWithGoogleButton';
 
-export type ErrorContainerProps = {
+type ErrorContainerProps = {
   message?: string;
   showSignIn?: boolean;
 };

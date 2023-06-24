@@ -1,30 +1,35 @@
-import { ReactNode, useRef } from 'react';
-import { ModalRoot } from '@/components/ui/modal/ModalRoot';
+import { forwardRef, ReactNode, useImperativeHandle, useRef } from 'react';
 import { useOnClickOutside } from 'usehooks-ts';
+import { ModalRef } from '@/hooks/ui/useModalRef';
 
-export type ModalProps = {
+type ModalProps = {
   children: ReactNode;
-  isOpen: boolean;
-  onClose: () => void;
 };
 
-export const Modal = ({ children, isOpen, onClose }: ModalProps) => {
-  const ref = useRef<HTMLDivElement>(null);
-  useOnClickOutside(ref, onClose);
+export const Modal = forwardRef<ModalRef, ModalProps>(function Modal(
+  { children },
+  ref,
+) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  useImperativeHandle(ref, () => ({
+    open: () => {
+      dialogRef.current?.showModal();
+    },
+    close: () => {
+      dialogRef.current?.close();
+    },
+  }));
+
+  const dialogInnerRef = useRef<HTMLDivElement>(null);
+  useOnClickOutside(dialogInnerRef, () => {
+    dialogRef.current?.close();
+  });
+
   return (
-    <ModalRoot>
-      <input
-        checked={isOpen}
-        type="checkbox"
-        readOnly
-        id="system-prompt-editor-modal"
-        className="modal-toggle"
-      />
-      <div className="modal">
-        <div className="modal-box" ref={ref}>
-          {children}
-        </div>
+    <dialog ref={dialogRef} className="modal">
+      <div className="modal-box" ref={dialogInnerRef}>
+        {children}
       </div>
-    </ModalRoot>
+    </dialog>
   );
-};
+});

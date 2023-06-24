@@ -1,6 +1,6 @@
 import { ThemeToggleButton } from '@/components/app/ThemeToggleButton';
-import { UserInfo } from '@/components/auth/UserInfo';
-import { SignOutButton } from '@/components/auth/SignOutButton';
+import { UserInfo } from '@/features/auth/components/UserInfo';
+import { SignOutButton } from '@/features/auth/components/SignOutButton';
 
 export const AppFooter = () => {
   return (

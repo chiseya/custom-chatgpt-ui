@@ -1,9 +1,9 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { ChatHistoryPane } from '@/components/chat/ChatHistoryPane';
+import { ChatHistoryPane } from '@/features/chat/components/history/ChatHistoryPane';
 
-export type ChatLayoutProps = {
+type ChatLayoutProps = {
   children?: ReactNode;
 };
 
