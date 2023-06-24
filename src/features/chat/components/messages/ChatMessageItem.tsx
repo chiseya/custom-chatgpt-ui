@@ -34,32 +34,36 @@ export const ChatMessageItem = ({ message }: ChatMessageItemProps) => {
           className="w-5 h-5 p-1 flex-shrink-0 mr-2"
         />
       )}
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
-        className="flex-grow prose max-w-none"
-        components={{
-          code({ node, inline, className, children, ...props }) {
-            const match = /language-(\w+)/.exec(className || '');
-            return !inline && match ? (
-              <SyntaxHighlighter
-                {...props}
-                style={gruvboxDark}
-                customStyle={{ background: 'transparent' }}
-                language={match[1]}
-                PreTag="div"
-              >
-                {String(children).replace(/\n$/, '')}
-              </SyntaxHighlighter>
-            ) : (
-              <code {...props} className={className}>
-                {children}
-              </code>
-            );
-          },
-        }}
-      >
-        {message.content}
-      </ReactMarkdown>
+      {message.role === 'assistant' ? (
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          className="flex-grow prose max-w-none"
+          components={{
+            code({ node, inline, className, children, ...props }) {
+              const match = /language-(\w+)/.exec(className || '');
+              return !inline && match ? (
+                <SyntaxHighlighter
+                  {...props}
+                  style={gruvboxDark}
+                  customStyle={{ background: 'transparent' }}
+                  language={match[1]}
+                  PreTag="div"
+                >
+                  {String(children).replace(/\n$/, '')}
+                </SyntaxHighlighter>
+              ) : (
+                <code {...props} className={className}>
+                  {children}
+                </code>
+              );
+            },
+          }}
+        >
+          {message.content}
+        </ReactMarkdown>
+      ) : (
+        <p className="flex-grow whitespace-pre-wrap">{message.content}</p>
+      )}
     </div>
   );
 };

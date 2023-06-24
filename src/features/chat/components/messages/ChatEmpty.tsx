@@ -1,6 +1,6 @@
-import OpenAILogoMark from '../../../../assets/images/openai-logomark.svg';
 import { SystemPromptEditor } from '@/features/chat/components/messages/SystemPromptEditor';
 import { SystemPrompt } from '@/features/chat/components/messages/SystemPrompt';
+import { OpenAILogoMark } from '@/components/brand/OpenAILogoMark';
 
 type ChatEmptyProps = {
   systemPrompt?: string;
